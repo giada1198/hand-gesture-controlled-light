@@ -73,7 +73,7 @@ void loop() {
           recordedDists[recordedDistLength] = dist;
           recordedDistLength += 1;
         }
-      } else { // save hands positions in the array
+      } else {
         recordedDists[recordedDistLength] = dist;
         recordedDistLength += 1;
       }
@@ -164,7 +164,7 @@ void loop() {
         } else {
           brightness = 0;
         }
-        leds[(i+offset)%NUM_LEDS] = CHSV(hue, saturation, brightness);
+        leds[(offset-i+NUM_LEDS)%NUM_LEDS] = CHSV(hue, saturation, brightness);        
       }
       FastLED.show();
       break;
@@ -175,7 +175,7 @@ void loop() {
         } else {
           brightness = 0;
         }
-        leds[(i+NUM_LEDS-offset)%NUM_LEDS] = CHSV(hue, saturation, brightness);
+        leds[(offset+i)%NUM_LEDS] = CHSV(hue, saturation, brightness);
       }
       FastLED.show();
       break;
@@ -189,7 +189,11 @@ void loop() {
       }
       break;   
   }
-  
-  offset = (offset+1)%NUM_LEDS;
+
+  if(pattern_state == 1) {
+    offset = (offset+1)%NUM_LEDS;
+  } else if(pattern_state == 2) {
+    offset = (offset-1+NUM_LEDS)%NUM_LEDS;
+  }
   delay(10);
 }
